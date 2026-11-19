@@ -1,0 +1,700 @@
+/* =========================================================
+   HoraCerta – Calculadora de horas trabalhadas
+   Mobile-first: a base vale para telas pequenas; telas
+   maiores são tratadas nas media queries do final.
+   ========================================================= */
+
+:root {
+    --tinta: #17212b;
+    --suave: #51606d;
+    --fundo: #e8ecef;
+    --branco: #ffffff;
+    --linha: #c2ccd5;
+    --neutro: #eef1f4;
+    --verde: #0b6b5a;
+    --verde-claro: #ddf2ec;
+    --menta: #57d4b8;
+    --vermelho: #b3261e;
+    --vermelho-claro: #fbe3e0;
+    --ambar-claro: #fff1c9;
+    --ambar-escuro: #6b4a00;
+
+    --raio: 0.5rem;
+    --margem: 1rem;
+    --pad-cartao: 1.1rem;
+    --fonte-numeros: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    color: var(--tinta);
+    background-color: var(--fundo);
+    overflow-wrap: break-word;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+h1,
+h2 {
+    margin: 0;
+    line-height: 1.2;
+}
+
+p {
+    margin: 0;
+}
+
+a {
+    color: var(--verde);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+    outline: 3px solid var(--verde);
+    outline-offset: 2px;
+}
+
+/* texto só para leitores de tela */
+.so-leitor {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.miolo {
+    width: 100%;
+    max-width: 70rem;
+    margin-inline: auto;
+    padding-inline: var(--margem);
+}
+
+
+/* ---------- Header ---------- */
+.topo {
+    padding-block: 1.5rem 1.75rem;
+    color: var(--branco);
+    background-color: var(--tinta);
+}
+
+.marca {
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.marca span {
+    color: var(--menta);
+}
+
+.topo h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1.65rem;
+}
+
+.subtitulo {
+    max-width: 36rem;
+    color: #c5d0da;
+}
+
+
+/* ---------- Estrutura da página (mobile: uma coluna) ---------- */
+.pagina {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "ferramenta"
+        "conteudo";
+    gap: 1.25rem;
+    padding-block: 1.25rem 2rem;
+}
+
+.ferramenta {
+    grid-area: ferramenta;
+    display: grid;
+    gap: 1.25rem;
+    min-width: 0;
+}
+
+.conteudo {
+    grid-area: conteudo;
+    max-width: 46rem;
+}
+
+
+/* ---------- Cartão ---------- */
+.cartao {
+    padding: 1.25rem var(--pad-cartao);
+    background-color: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 0.75rem;
+}
+
+
+/* ---------- Formulário ---------- */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+    margin-bottom: 1rem;
+}
+
+label {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    max-width: 100%;
+    min-height: 2.75rem;
+    padding: 0.6rem 0.7rem;
+    font: inherit;
+    color: var(--tinta);
+    background-color: var(--branco);
+    border: 1px solid #8794a1;
+    border-radius: var(--raio);
+}
+
+input:hover {
+    border-color: var(--tinta);
+}
+
+input:focus {
+    border-color: var(--verde);
+    outline: 3px solid rgba(11, 107, 90, 0.3);
+}
+
+fieldset {
+    min-width: 0;
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+}
+
+legend {
+    margin-bottom: 0.6rem;
+    padding: 0;
+    font-weight: 700;
+}
+
+.grade-horarios {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.grade-horarios .campo {
+    margin-bottom: 0;
+}
+
+.dica {
+    font-size: 0.85rem;
+    color: var(--suave);
+}
+
+fieldset > .dica {
+    margin-top: 0.6rem;
+}
+
+.atalhos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+}
+
+.atalhos button {
+    min-height: 2.5rem;
+    padding: 0.3rem 0.9rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--tinta);
+    background-color: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.atalhos button:hover {
+    border-color: var(--tinta);
+}
+
+.atalhos button[aria-pressed="true"] {
+    color: var(--branco);
+    background-color: var(--tinta);
+    border-color: var(--tinta);
+}
+
+
+/* ---------- Linha pontilhada (cartão de ponto) ---------- */
+.perfuracao {
+    position: relative;
+    margin: 1.5rem calc(var(--pad-cartao) * -1);
+    border-top: 2px dashed var(--linha);
+}
+
+.perfuracao::before,
+.perfuracao::after {
+    content: "";
+    position: absolute;
+    top: -0.8rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: var(--fundo);
+    border-radius: 50%;
+}
+
+.perfuracao::before {
+    left: -0.75rem;
+}
+
+.perfuracao::after {
+    right: -0.75rem;
+}
+
+
+/* ---------- Resultado ---------- */
+.aviso {
+    margin-bottom: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+    background-color: var(--neutro);
+    border-radius: var(--raio);
+}
+
+.aviso:empty {
+    display: none;
+}
+
+.aviso[data-tipo="erro"] {
+    color: var(--vermelho);
+    background-color: var(--vermelho-claro);
+}
+
+.rotulo {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--suave);
+}
+
+.valor-grande {
+    font-family: var(--fonte-numeros);
+    font-size: 2.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
+.valor {
+    font-family: var(--fonte-numeros);
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.grade-resultado {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.grade-resultado > div {
+    padding: 0.6rem 0.5rem;
+    background-color: var(--neutro);
+    border-radius: var(--raio);
+}
+
+.saldo[data-estado="extra"],
+[data-estado="extra"] {
+    color: var(--verde);
+}
+
+.saldo[data-estado="falta"],
+[data-estado="falta"] {
+    color: var(--vermelho);
+}
+
+.grade-resultado > .saldo[data-estado="extra"] {
+    background-color: var(--verde-claro);
+}
+
+.grade-resultado > .saldo[data-estado="falta"] {
+    background-color: var(--vermelho-claro);
+}
+
+.saldo .rotulo,
+.saldo .dica {
+    color: inherit;
+}
+
+
+/* ---------- Barra do dia ---------- */
+.bloco-linha {
+    margin-top: 1.25rem;
+}
+
+.linha-dia {
+    display: flex;
+    height: 1.25rem;
+    overflow: hidden;
+    background-color: var(--neutro);
+    border-radius: 0.25rem;
+}
+
+.linha-dia span {
+    flex-basis: 0;
+    min-width: 0;
+}
+
+.linha-dia .trabalho {
+    background-color: var(--verde);
+}
+
+.linha-dia .pausa {
+    background: repeating-linear-gradient(45deg, #ffffff 0 4px, #b7c2cc 4px 8px);
+}
+
+.eixo {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+    font-family: var(--fonte-numeros);
+    font-size: 0.8rem;
+    color: var(--suave);
+}
+
+.legenda {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--suave);
+}
+
+.chave {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    margin: 0 0.2rem 0 0.6rem;
+    vertical-align: -0.1rem;
+    border-radius: 2px;
+}
+
+.chave:first-child {
+    margin-left: 0;
+}
+
+.chave-trabalho {
+    background-color: var(--verde);
+}
+
+.chave-pausa {
+    background: repeating-linear-gradient(45deg, #ffffff 0 2px, #b7c2cc 2px 4px);
+    border: 1px solid #b7c2cc;
+}
+
+
+/* ---------- Botões ---------- */
+.acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+}
+
+.botao {
+    min-height: 2.75rem;
+    padding: 0.6rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--tinta);
+    background-color: transparent;
+    border: 2px solid var(--tinta);
+    border-radius: var(--raio);
+    cursor: pointer;
+}
+
+.botao:hover {
+    background-color: var(--neutro);
+}
+
+.botao-principal {
+    color: var(--branco);
+    background-color: var(--tinta);
+}
+
+.botao-principal:hover {
+    background-color: var(--verde);
+    border-color: var(--verde);
+}
+
+.botao-perigo {
+    color: var(--vermelho);
+    border-color: var(--vermelho);
+}
+
+.botao-perigo:hover {
+    background-color: var(--vermelho-claro);
+}
+
+.botao:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.botao:disabled:hover {
+    background-color: transparent;
+}
+
+.mensagem {
+    min-height: 1.5rem;
+    margin-top: 0.75rem;
+    font-weight: 600;
+    color: var(--verde);
+}
+
+.mensagem[data-tipo="erro"] {
+    color: var(--vermelho);
+}
+
+
+/* ---------- Histórico ---------- */
+.historico-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.historico-topo h2 {
+    font-size: 1.25rem;
+}
+
+.saldo-acumulado strong {
+    font-family: var(--fonte-numeros);
+}
+
+.lista-historico {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.item {
+    padding: 0.75rem;
+    border: 1px solid var(--linha);
+    border-radius: var(--raio);
+}
+
+.item-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.6rem;
+    margin-bottom: 0.5rem;
+}
+
+.item-data {
+    font-weight: 700;
+}
+
+.item-dia {
+    font-size: 0.9rem;
+    color: var(--suave);
+}
+
+.selo {
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ambar-escuro);
+    background-color: var(--ambar-claro);
+    border-radius: 999px;
+}
+
+.item-metricas {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.item-metricas dt {
+    font-size: 0.75rem;
+    color: var(--suave);
+}
+
+.item-metricas dd {
+    margin: 0;
+    font-family: var(--fonte-numeros);
+    font-weight: 700;
+}
+
+.item-acoes {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
+}
+
+.item-acoes button {
+    min-height: 2.25rem;
+    padding: 0.25rem 0.75rem;
+    font: inherit;
+    font-size: 0.85rem;
+    color: var(--tinta);
+    background-color: var(--branco);
+    border: 1px solid var(--linha);
+    border-radius: var(--raio);
+    cursor: pointer;
+}
+
+.item-acoes button:hover {
+    border-color: var(--tinta);
+}
+
+.item-acoes .remover {
+    color: var(--vermelho);
+}
+
+
+/* ---------- Conteúdo complementar ---------- */
+.conteudo h2 {
+    margin: 1.75rem 0 0.6rem;
+    font-size: 1.25rem;
+}
+
+.conteudo h2:first-child {
+    margin-top: 0;
+}
+
+.conteudo p,
+.conteudo ol {
+    margin-bottom: 0.75rem;
+}
+
+.conteudo ol {
+    padding-left: 1.25rem;
+}
+
+.conteudo li + li {
+    margin-top: 0.25rem;
+}
+
+details {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--linha);
+}
+
+summary {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+details p {
+    margin: 0.5rem 0 0;
+    color: var(--suave);
+}
+
+
+/* ---------- Footer ---------- */
+.rodape {
+    padding: 1.5rem var(--margem);
+    text-align: center;
+    background-color: var(--tinta);
+}
+
+.rodape a {
+    font-weight: 600;
+    color: var(--branco);
+}
+
+.rodape a:hover {
+    color: var(--menta);
+}
+
+
+/* =========================================================
+   TABLET – a partir de 768 px
+   ========================================================= */
+@media (min-width: 48em) {
+
+    :root {
+        --margem: 1.5rem;
+        --pad-cartao: 1.75rem;
+    }
+
+    .topo {
+        padding-block: 2rem 2.25rem;
+    }
+
+    .topo h1 {
+        font-size: 2.25rem;
+    }
+
+    .grade-horarios {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .valor-grande {
+        font-size: 3.5rem;
+    }
+
+    .valor {
+        font-size: 1.5rem;
+    }
+
+    .grade-resultado > div {
+        padding: 0.75rem 1rem;
+    }
+
+    .item {
+        display: grid;
+        grid-template-columns: minmax(10rem, 1fr) 2fr auto;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .item-topo,
+    .item-acoes {
+        margin: 0;
+    }
+}
+
+
+/* =========================================================
+   DESKTOP – a partir de 1024 px: ferramenta e instruções lado a lado
+   ========================================================= */
+@media (min-width: 64em) {
+
+    .pagina {
+        grid-template-columns: minmax(0, 1fr) 22rem;
+        grid-template-areas: "ferramenta conteudo";
+        column-gap: 2rem;
+        align-items: start;
+        padding-block: 2rem 3rem;
+    }
+
+    .conteudo {
+        max-width: none;
+    }
+}

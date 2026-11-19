@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Horas Trabalhadas | HoraCerta</title>
+    <meta name="description" content="Calcule horas trabalhadas, intervalo, horas extras e saldo do dia informando entrada, saída para o intervalo, retorno e saída final. Grátis, sem cadastro.">
+    <meta name="theme-color" content="#17212b">
+
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Calculadora de Horas Trabalhadas | HoraCerta">
+    <meta property="og:description" content="Descubra em segundos quantas horas você trabalhou e se tem hora extra ou saldo negativo.">
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2317212b'/%3E%3Ccircle cx='16' cy='16' r='9' fill='none' stroke='%23ffffff' stroke-width='2.5'/%3E%3Cpath d='M16 10v6l4 3' fill='none' stroke='%2357d4b8' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+
+    <header class="topo">
+        <div class="miolo">
+            <p class="marca">Hora<span>Certa</span></p>
+            <h1>Calculadora de horas trabalhadas</h1>
+            <p class="subtitulo">
+                Informe entrada, intervalo e saída. O total, as horas extras e o saldo do dia aparecem na hora.
+            </p>
+        </div>
+    </header>
+
+    <main class="pagina miolo">
+
+        <noscript>
+            <p class="aviso" data-tipo="erro">Esta calculadora precisa de JavaScript. Ative-o no navegador para usar.</p>
+        </noscript>
+
+        <section id="ferramenta" class="ferramenta" aria-labelledby="titulo-ferramenta">
+            <h2 id="titulo-ferramenta" class="so-leitor">Calculadora</h2>
+
+            <div class="cartao">
+                <form id="form-horas" novalidate>
+
+                    <div class="campo">
+                        <label for="data">Data</label>
+                        <input type="date" id="data" name="data">
+                        <p id="info-data" class="dica"></p>
+                    </div>
+
+                    <fieldset>
+                        <legend>Horários do dia</legend>
+                        <div class="grade-horarios">
+                            <div class="campo">
+                                <label for="entrada">Entrada</label>
+                                <input type="time" id="entrada" name="entrada">
+                            </div>
+                            <div class="campo">
+                                <label for="saida-intervalo">Saída para intervalo</label>
+                                <input type="time" id="saida-intervalo" name="saida-intervalo">
+                            </div>
+                            <div class="campo">
+                                <label for="retorno">Retorno do intervalo</label>
+                                <input type="time" id="retorno" name="retorno">
+                            </div>
+                            <div class="campo">
+                                <label for="saida-final">Saída final</label>
+                                <input type="time" id="saida-final" name="saida-final">
+                            </div>
+                        </div>
+                        <p class="dica">Sem intervalo? Deixe os dois campos do meio vazios.</p>
+                    </fieldset>
+
+                    <div class="campo">
+                        <label for="jornada">Jornada diária</label>
+                        <input type="time" id="jornada" name="jornada" value="08:00">
+                        <div class="atalhos" role="group" aria-label="Jornadas comuns">
+                            <button type="button" data-jornada="06:00" aria-pressed="false">6h</button>
+                            <button type="button" data-jornada="08:00" aria-pressed="true">8h</button>
+                            <button type="button" data-jornada="08:48" aria-pressed="false">8h48</button>
+                        </div>
+                    </div>
+
+                
+                    <div class="perfuracao" aria-hidden="true"></div>
+
+                    <div class="resultado" id="resultado">
+                        <p id="aviso" class="aviso" data-tipo="info"></p>
+
+                        <div class="total">
+                            <p class="rotulo">Total trabalhado</p>
+                            <p class="valor-grande" id="res-trabalhado">--:--</p>
+                            <p class="dica" id="res-decimal"></p>
+                        </div>
+
+                        <div class="grade-resultado">
+                            <div>
+                                <p class="rotulo">Intervalo</p>
+                                <p class="valor" id="res-intervalo">--:--</p>
+                            </div>
+                            <div>
+                                <p class="rotulo">Jornada</p>
+                                <p class="valor" id="res-jornada">--:--</p>
+                            </div>
+                            <div class="saldo" id="bloco-saldo" data-estado="vazio" aria-live="polite">
+                                <p class="rotulo">Saldo</p>
+                                <p class="valor" id="res-saldo">--:--</p>
+                                <p class="dica" id="res-saldo-texto"></p>
+                            </div>
+                        </div>
+
+                        <div class="bloco-linha" id="bloco-linha" hidden>
+                            <div class="linha-dia" id="linha-dia" role="img" aria-label="Distribuição do dia"></div>
+                            <p class="eixo"><span id="eixo-inicio"></span><span id="eixo-fim"></span></p>
+                            <p class="legenda">
+                                <span class="chave chave-trabalho"></span> Trabalho
+                                <span class="chave chave-pausa"></span> Intervalo
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="acoes">
+                        <button type="submit" class="botao botao-principal">Salvar no histórico</button>
+                        <button type="button" id="btn-copiar" class="botao">Copiar resumo</button>
+                        <button type="button" id="btn-compartilhar" class="botao" hidden>Compartilhar</button>
+                        <button type="button" id="btn-limpar" class="botao">Limpar horários</button>
+                    </div>
+                    <p id="mensagem" class="mensagem" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+
+            <section class="cartao" aria-labelledby="titulo-historico">
+                <div class="historico-topo">
+                    <h2 id="titulo-historico">Histórico</h2>
+                    <p class="saldo-acumulado">Saldo acumulado: <strong id="saldo-acumulado" data-estado="ok">00:00</strong></p>
+                </div>
+
+                <p id="historico-vazio" class="dica">Nenhum dia salvo ainda. Use "Salvar no histórico" para registrar o cálculo.</p>
+                <ul id="lista-historico" class="lista-historico"></ul>
+
+                <div class="acoes">
+                    <button type="button" id="btn-exportar" class="botao">Baixar CSV</button>
+                    <button type="button" id="btn-apagar" class="botao botao-perigo">Apagar histórico</button>
+                </div>
+            </section>
+        </section>
+
+        <section id="conteudo" class="conteudo" aria-labelledby="titulo-como-usar">
+            <h2 id="titulo-como-usar">Como usar a calculadora</h2>
+            <ol>
+                <li>Confira a data (ela já vem preenchida com o dia de hoje).</li>
+                <li>Digite a entrada, a saída para o intervalo, o retorno e a saída final.</li>
+                <li>Ajuste a jornada diária ou toque em um dos atalhos (6h, 8h, 8h48).</li>
+                <li>Veja o total trabalhado, o intervalo e o saldo. Toque em "Salvar no histórico" para guardar o dia.</li>
+            </ol>
+
+            <h2>Como o cálculo é feito</h2>
+            <p>
+                <strong>Total trabalhado</strong> = (saída final − entrada) − intervalo.<br>
+                <strong>Saldo</strong> = total trabalhado − jornada diária. Se for positivo, são horas extras;
+                se for negativo, faltaram horas.
+            </p>
+            <p>
+                Exemplo: entrada 08:00, intervalo das 12:00 às 13:00 e saída às 17:30 resultam em 8h30 trabalhadas.
+                Com jornada de 8h, o saldo é de +00:30.
+            </p>
+
+            <h2>Perguntas frequentes</h2>
+            <details>
+                <summary>Funciona para turno que passa da meia-noite?</summary>
+                <p>Sim. Quando um horário é menor que o anterior, a calculadora entende que já é o dia seguinte. Exemplo: entrada às 22:00 e saída às 06:00.</p>
+            </details>
+            <details>
+                <summary>E se eu não faço intervalo?</summary>
+                <p>Deixe os campos de saída e retorno do intervalo vazios. Só a entrada e a saída final são obrigatórias.</p>
+            </details>
+            <details>
+                <summary>Meus dados ficam salvos em algum servidor?</summary>
+                <p>Não. O histórico e as preferências ficam apenas no seu navegador (localStorage). A única consulta externa é à BrasilAPI, para avisar quando a data é feriado nacional, e nela só o ano da data é informado.</p>
+            </details>
+            <details>
+                <summary>Isso substitui o cartão de ponto da empresa?</summary>
+                <p>Não. É uma ferramenta de apoio. Tolerâncias, adicional de horas extras e banco de horas dependem do contrato e da convenção da sua categoria.</p>
+            </details>
+        </section>
+
+    </main>
+
+    <footer class="rodape">
+        <a href="https://lucas-motta231.github.io/pagina-css-lucas/">Site pessoal</a>
+    </footer>
+
+</body>
+</html>
